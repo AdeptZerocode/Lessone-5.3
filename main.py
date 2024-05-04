@@ -14,7 +14,7 @@
 #Попробуйте добавить дополнительные функции в вашу программу, такие как сохранение информации о зоопарке
 #в файл и возможность её загрузки, чтобы у вашего зоопарка было "постоянное состояние" между запусками программы.
 
-
+import pickle
 class Animal():
      def __init__(self, name, age):
          self.name = name
@@ -54,6 +54,19 @@ class Zoo():
         self.staff.append(new_staff)
         print(f"Сотрудник {new_staff} добавлен")
 
+    def save_zoo(self, filename):
+        with open(filename, 'wb') as file:
+            pickle.dump(self, file)
+            print(f"Зоопарк сохранен в файл {filename}")
+
+    @staticmethod
+    def load_zoo(filename):
+        with open(filename, 'rb') as file:
+            zoo = pickle.load(file)
+            print(f"Зоопарк загружен из файла {filename}")
+            return zoo
+
+
 class Zookeeper():
     def feed_animal(self, animal):
         print(f"Сотрудник покормил {animal.name}")
@@ -79,6 +92,9 @@ zoo.add_staff(veterinarian)
 
 keeper.feed_animal(bird1)
 veterinarian.heal_animal(mammal1)
+
+zoo.save_zoo('zoo_state.pkl')
+new_zoo = Zoo.load_zoo('zoo_state.pkl')
 
 
 
